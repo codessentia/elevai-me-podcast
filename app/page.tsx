@@ -38,7 +38,13 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-black">
-      <audio autoPlay loop preload="auto" muted={false}>
+      <audio
+        autoPlay
+        loop
+        preload="auto"
+        controls
+        className="fixed top-20 md:top-20 top-56 left-1/2 transform -translate-x-1/2 z-50 opacity-70 hover:opacity-100 transition-opacity"
+      >
         <source
           src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Elevai-me%20%28Edit%29-zcqENCrZwUWcOoGPD7HokC6rZPagnE.wav"
           type="audio/wav"
