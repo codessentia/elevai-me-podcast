@@ -6,6 +6,7 @@ export default function HomePage() {
   const [typewriterText, setTypewriterText] = useState("")
   const [bubbleCount, setBubbleCount] = useState(15)
   const [showModal, setShowModal] = useState(false)
+  const [bubblesMultiplied, setBubblesMultiplied] = useState(false)
 
   useEffect(() => {
     const fullText = "Pastor Cristóvão Carriço"
@@ -26,15 +27,25 @@ export default function HomePage() {
   useEffect(() => {
     const bubbleInterval = setInterval(() => {
       setBubbleCount((prev) => {
-        if (prev < 50) {
-          return prev + 3
+        const addRate = bubblesMultiplied ? 9 : 3 // 3x faster when multiplied
+        const maxBubbles = bubblesMultiplied ? 150 : 50 // 3x more bubbles when multiplied
+
+        if (prev < maxBubbles) {
+          return prev + addRate
         }
         return prev
       })
     }, 1000)
 
-    return () => clearInterval(bubbleInterval)
-  }, [])
+    const multiplyTimer = setTimeout(() => {
+      setBubblesMultiplied(true)
+    }, 10000) // 10 seconds
+
+    return () => {
+      clearInterval(bubbleInterval)
+      clearTimeout(multiplyTimer)
+    }
+  }, [bubblesMultiplied])
 
   return (
     <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-black">
@@ -43,7 +54,7 @@ export default function HomePage() {
         loop
         preload="auto"
         controls
-        className="fixed top-20 md:top-20 top-56 left-1/2 transform -translate-x-1/2 z-50 opacity-70 hover:opacity-100 transition-opacity"
+        className="fixed top-20 md:top-20 top-60 left-1/2 transform -translate-x-1/2 z-50 opacity-30 hover:opacity-80 transition-opacity"
       >
         <source
           src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Elevai-me%20%28Edit%29-zcqENCrZwUWcOoGPD7HokC6rZPagnE.wav"
@@ -628,7 +639,8 @@ export default function HomePage() {
                 const startY = 800 + Math.random() * 100
                 const endX = startX + (-50 + Math.random() * 100)
                 const endY = -150 - Math.random() * 200
-                const duration = 8 + Math.random() * 12
+                const baseDuration = bubblesMultiplied ? 4 : 8 // 2x faster when multiplied
+                const duration = baseDuration + Math.random() * (bubblesMultiplied ? 6 : 12)
                 const delay = Math.random() * 20
                 const size = 1.5 + Math.random() * 3
 
